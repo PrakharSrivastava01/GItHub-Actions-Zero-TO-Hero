@@ -26,6 +26,6 @@ jobs:
           context: .
           push: true
           tags: |
-            
+            chintamani7978/github-actions-app:${{ github.ref_name }}
             chintamani7978/github-actions-app:latest
             chintamani7978/github-actions-app:${{ github.sha }}
