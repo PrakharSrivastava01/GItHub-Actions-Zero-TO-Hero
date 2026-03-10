@@ -1,109 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask App - GitHub Actions</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            max-width: 600px;
-            text-align: center;
-        }
-        
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 2.5em;
-        }
-        
-        .status {
-            background: #4caf50;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 5px;
-            display: inline-block;
-            margin: 20px 0;
-            font-weight: bold;
-        }
-        
-        p {
-            color: #666;
-            font-size: 1.1em;
-            line-height: 1.6;
-            margin: 20px 0;
-        }
-        
-        .info-box {
-            background: #f0f8ff;
-            border-left: 4px solid #667eea;
-            padding: 15px;
-            margin: 20px 0;
-            text-align: left;
-            border-radius: 5px;
-        }
-        
-        .badge {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            margin: 5px;
-        }
-        
-        footer {
-            margin-top: 30px;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-            color: #999;
-            font-size: 0.9em;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevOps Zero To Hero</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+color:#e0e0e0
+}
+
+.container{text-align:center;padding:2rem;max-width:640px}
+
+h1{
+font-size:2.5rem;
+background:linear-gradient(90deg,#00d2ff,#7b2ff7);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+margin-bottom:.5rem
+}
+
+.badge{
+display:inline-block;
+margin:1rem 0;
+padding:.4rem 1.2rem;
+border:1px solid #7b2ff7;
+border-radius:999px;
+font-size:.9rem;
+color:#c4b5fd
+}
+
+.pipeline{
+margin-bottom:1.5rem;
+font-size:.9rem;
+color:#9ca3af
+}
+
+.cards{
+display:flex;
+gap:1rem;
+justify-content:center;
+flex-wrap:wrap
+}
+
+.card{
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.1);
+border-radius:12px;
+padding:1.4rem;
+min-width:150px
+}
+
+.card span{
+display:block;
+font-size:.7rem;
+color:#9ca3af;
+margin-bottom:.4rem;
+letter-spacing:.1em
+}
+
+.card strong{
+font-size:1.2rem;
+color:#f9fafb
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>🚀 Flask App</h1>
-        <div class="status">✅ Application Running</div>
-        
-        <p>Welcome to your Flask application deployed with GitHub Actions and Docker!</p>
-        
-        <div class="info-box">
-            <h3>📊 Application Info</h3>
-            <p><strong>Framework:</strong> Flask 3.0.0</p>
-            <p><strong>Port:</strong> 5000</p>
-            <p><strong>Status:</strong> Healthy</p>
-        </div>
-        
-        <div>
-            <span class="badge">Docker</span>
-            <span class="badge">GitHub Actions</span>
-            <span class="badge">Flask</span>
-        </div>
-        
-        <footer>
-            <p>Built with ❤️ using Flask and Docker</p>
-        </footer>
-    </div>
+
+<div class="container">
+
+<h1>DevOps Zero To Hero [DevSecOps Live]</h1>
+<div class="badge">Josh Batch 10 (USA Edition BOOOM)</div>
+
+<div class="pipeline">
+Built • Tested • Linted • Deployed via GitHub Actions
+</div>
+
+<div class="cards">
+<div class="card">
+<span>Framework</span>
+<strong>Flask 3.1</strong>
+</div>
+
+<div class="card">
+<span>Runtime</span>
+<strong>Python 3.14</strong>
+</div>
+
+<div class="card">
+<span>Deploy</span>
+<strong>AWS ECS</strong>
+</div>
+
+<div class="card">
+<span>CI/CD</span>
+<strong>GitHub Actions</strong>
+</div>
+</div>
+
+</div>
+
 </body>
 </html>
