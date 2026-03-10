@@ -24,5 +24,29 @@ jobs:
             - name: Set up Docker Compose (optional, usually pre-installed on ubuntu-latest runners)
               uses: docker/setup-compose-action@v2 
 
-            - name: deploy with docker compose
-              run: docker compose down && docker compose up -d --build --force-recreate --pull always
+            - name: Stop existing containers
+              run: docker compose down || true
+
+            - name: Deploy with Docker Compose
+              run: docker compose up -d --build --force-recreate --pull always
+
+            - name: Wait for Flask app to be ready
+              run: |
+                echo "Waiting for Flask app to start..."
+                for i in {1..30}; do
+                  if curl -f http://localhost:80/health; then
+                    echo "Flask app is running!"
+                    break
+                  fi
+                  echo "Attempt $i: Flask app not ready yet, waiting..."
+                  sleep 2
+                done
+
+            - name: Verify Flask app is serving requests
+              run: |
+                curl -v http://localhost:80/
+                echo ""
+                echo "Flask app is successfully deployed!"
+
+            - name: Check Docker container status
+              run: docker compose ps
