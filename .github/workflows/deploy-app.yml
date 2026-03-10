@@ -6,7 +6,6 @@ on:
             - main
     
 jobs:
-
     deploy:
         runs-on: self-hosted
 
@@ -16,47 +15,76 @@ jobs:
               with:
                 fetch-depth: 0
 
-            - name: Kill any existing Flask container
+            - name: Force cleanup all Docker resources
               run: |
-                docker stop flask-app || true
-                docker rm flask-app || true
-                docker stop github-actions-zero-to-hero-web-1 || true
-                docker rm github-actions-zero-to-hero-web-1 || true
-                docker system prune -f || true
+                echo "Stopping all containers..."
+                docker stop $(docker ps -aq) || true
+                docker rm $(docker ps -aq) -f || true
+                echo "Removing all images related to flask-app..."
+                docker rmi flask-app:latest -f || true
+                docker rmi github-actions-app -f || true
+                docker rmi chintamani7978/github-actions-app -f || true
+                echo "Pruning all unused Docker resources..."
+                docker system prune -a -f || true
 
-            - name: Build Docker image locally
+            - name: Verify Dockerfile
               run: |
-                echo "Building Docker image..."
-                docker build -t flask-app:latest .
+                echo "=== Dockerfile Content ==="
+                cat Dockerfile
+                echo -e "\n=== requirements.txt Content ==="
+                cat requirements.txt
+                echo -e "\n=== app.py Content ==="
+                head -20 app.py
+
+            - name: Build Docker image
+              run: |
+                echo "Building fresh Flask Docker image..."
+                docker build --no-cache -t flask-app:latest .
+                echo "Build completed. Verifying image..."
                 docker images | grep flask-app
 
-            - name: Start Docker container
+            - name: Run Flask container
               run: |
                 echo "Starting Flask container..."
                 docker run -d \
                   -p 80:5000 \
                   --name flask-app \
-                  --rm \
                   flask-app:latest
+                echo "Container started. Waiting for app..."
+                sleep 3
+
+            - name: Check container status
+              run: |
+                echo "=== Container Status ==="
+                docker ps | grep flask-app
+                echo -e "\n=== Container Logs ==="
+                docker logs flask-app || true
 
             - name: Wait for Flask app to be ready
               run: |
-                echo "Waiting for Flask app to start..."
+                echo "Testing Flask app health..."
                 for i in {1..30}; do
-                  if curl -f http://localhost:80/health; then
-                    echo "Flask app is running!"
+                  if curl -f http://localhost:80/ 2>/dev/null; then
+                    echo "✅ Flask app is running!"
                     break
                   fi
-                  echo "Attempt $i: Flask app not ready yet, waiting..."
+                  echo "Attempt $i/30: Waiting for app..."
                   sleep 2
                 done
 
-            - name: Verify Flask app is serving requests
+            - name: Test Flask endpoints
               run: |
-                curl -v http://localhost:80/
-                echo ""
-                echo "Flask app is successfully deployed!"
+                echo "=== Testing / endpoint ==="
+                curl -v http://localhost:80/ || true
+                echo -e "\n=== Testing /health endpoint ==="
+                curl -v http://localhost:80/health || true
+                echo -e "\n=== Testing /api/message endpoint ==="
+                curl -v http://localhost:80/api/message || true
 
-            - name: Check container logs
-              if: always()
-              run: docker logs flask-app
+            - name: Cleanup on failure
+              if: failure()
+              run: |
+                echo "Deployment failed. Collecting logs..."
+                docker logs flask-app || true
+                docker stop flask-app || true
+                docker rm flask-app || true
